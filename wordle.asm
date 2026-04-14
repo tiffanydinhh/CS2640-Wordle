@@ -5,9 +5,9 @@ menu: .asciiz "~~~~~~~~~~~~ MAIN MENU “~~~~~~~~~~~~\n(1) Start Game\n(2)Exit P
 
 menuChoice: .asciiz "\nEnter (1) or (2) for your selection: "
 
-exitMsg: .asciiz "Exiting Program. Goodbye!"
+exitMsg: .asciiz "\nExiting Program. Goodbye!"
 
-word1: .asciiz "sunoo\n"
+word1: .asciiz "piano\n"
 word2 : .asciiz "apple\n"
 word3: .asciiz "water\n"
 
@@ -29,26 +29,29 @@ main:
 	beq $s0, 1, traverseArray
 	beq $s0, 2, exit
 
-#loop counter
+	#loop counter
 	li $t0, 3
 
 traverseArray:
-	li $v0, 42	#42 does random int generator in range
-	la $a0, 0	#generator ID
-	li $a1, 3	#upper bound (array size)
-	syscall		#$a0 now holds [0,2] 0-3
+	li $v0, 42	#42 = random int generator in range
+	li $a0, 0	#load generator ID in $a0 (0 = default generator)
+	li $a1, 3	#$a1 = upper bound (array size is 3)
+	syscall		#$a0 holds random index [0,2]
 
-	#shifting by 2 bits = multiplying by 4 (4 bytes = word) meaning we traverse to the next word
-	sll $t1, $a0, 2 	#shifts left by 2 bits, multiply index by 2^2=4 (4 is our offset), $t1 holds the byte offset
-	la $s1, wordBank	#loading our array into a base address
-	add $s1, $s1, $t1 	#adds offset ($t1) into base address ($s1), (array location) stored in base adrs
-	lw $a0, 0($s1)		#load rand word into $a0, load what is at $s1, $a0 contains rand elm
+	#convert index to byte offset so that we can traverse array (2 bits^2 = 4)
+	#sll quickly converts an array index to a byte offset
+	sll $t1, $a0, 2 	#index * 4 (4 bytes = word)
 
-	#print random word at the end so that user knows the correct word
+	la $s1, wordBank	#loading our array into a base address ($s1)
+
+	#move to correct element
+	add $s1, $s1, $t1 	#adds offset ($t1) into base address of array ($s1)
+	lw $s2, 0($s1)		#load random word stored in base address ($s1) to $s2
+
 	#print string
 	li $v0, 4
+	move $a0, $s2
 	syscall
-
 
 exit:
 	printString(exitMsg)
@@ -56,5 +59,3 @@ exit:
 	#exit program
 	li $v0, 10
 	syscall
-
-
