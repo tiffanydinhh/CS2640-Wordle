@@ -1,3 +1,8 @@
+# CS 2640
+# Tyler Carrasco, Tiffany Dinh, Kendan Phan, Angela Salcido
+# Final Project
+# mips assembly program that replicates the puzzle game "Wordle"
+
 .include "macros.asm"
 
 .data
