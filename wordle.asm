@@ -53,10 +53,10 @@ traverseArray:
 	add $s1, $s1, $t1 	#adds offset ($t1) into base address of array ($s1)
 	lw $s2, 0($s1)		#load random word stored in base address ($s1) to $s2
 
-	#print string
-	li $v0, 4
-	move $a0, $s2
-	syscall
+	#print random word
+	#li $v0, 4
+	#move $a0, $s2
+	#syscall
 
 exit:
 	printString(exitMsg)
