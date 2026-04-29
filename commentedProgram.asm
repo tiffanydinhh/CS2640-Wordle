@@ -67,7 +67,7 @@ traverseArray:
     	li $v0, 42	# 42 = random int generator in range
     	li $a0, 0    	#load generator ID in $a0 (0 = default generator)
     	li $a1, 10    	#$a1 = upper bound (array size is 10)
-    	syscall        	#$a0 holds random index [0,2]
+    	syscall        	#$a0 holds random index [0,9]
 
     	#convert index to byte offset so that we can traverse array (2 bits^2 = 4)
     	#sll quickly converts an array index to a byte offset
