@@ -116,7 +116,7 @@ loop:
     
     	j loop
 
-promptUserToTryAgainIfWrong:  #come back here to work on
+promptUserToTryAgainIfWrong:
     	move $t7, $s2	#$t7 stores address correct word
     	la $t0, guessBuffer
     	li $t9, 0 	#counter for loop to check for perfect answer
@@ -169,8 +169,8 @@ checkIfLong:
 loopForGame:
      	lb $t5, 0($t0)	#load byte/char from user guess into $t5 
      	lb $t6, 0($t3)	#load byte/char from correct randomized word into $t6
-     	beq $t2, $t4, promptUserToTryAgainIfWrong	#if byte/char reaches more than 5-letters (6), check if user guess is wrong
-     	bne $t5, $t6, wrongCharAtPosition	#if user guess and correct word byte/char are not equal,
+     	beq $t2, $t4, promptUserToTryAgainIfWrong	#if byte/char position reaches more than 5-letters (6), check if user guess is wrong
+     	bne $t5, $t6, wrongCharAtPosition	#if user guess and correct word byte/char are not equal, then character is in wrong position
      
      	li $v0, 11	# 11 = print character
      	move $a0, $t5	#print user character guess
@@ -212,7 +212,7 @@ wrongCharAtPosition:
    
 #check if user guess letter exists in correct word at all
 checkIfExistsLoop:
-   	lb $t1, 0($t7) # CHECK IF t1 REGISTER IS OKAY TO USE HERE TYLER t7 has word address, t5 has letter byte currently
+   	lb $t1, 0($t7)
    	beq $t8, $t9, doesNotExist	#if we checked all 5-letters (counter equals max index), there is no match so letter does not exist
    	beq $t5, $t1, printExists	#if guessed wrong letter equals a letter in the correct word, letter exists
    	
