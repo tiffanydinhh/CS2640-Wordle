@@ -15,6 +15,13 @@ exitMsg: .asciiz "\nExiting Program. Goodbye!"
 word1: .asciiz "piano\n"
 word2: .asciiz "apple\n"
 word3: .asciiz "water\n" 
+word4: .asciiz "whose\n"
+word5: .asciiz "grand\n"
+word6: .asciiz "heavy\n"
+word7: .asciiz "while\n"
+word8: .asciiz "usual\n"
+word9: .asciiz "stick\n"
+word10: .asciiz "vital\n"
 
 youLose: .asciiz "You have reached max attempts, you lose! The answer was "
 
@@ -32,7 +39,7 @@ fiveLetterFalse : .asciiz"\nInput is not 5 letters"
 
 replayMenu: .asciiz "\n~~Would you like to play again?~~\n(1) Yes\n(2) No\n"
 
-wordBank: .word word1, word2, word3
+wordBank: .word word1, word2, word3, word4, word5, word6, word7, word8, word9, word10
 
 .text
 main: 
@@ -59,7 +66,7 @@ main:
 traverseArray:
     	li $v0, 42	# 42 = random int generator in range
     	li $a0, 0    	#load generator ID in $a0 (0 = default generator)
-    	li $a1, 3    	#$a1 = upper bound (array size is 3)
+    	li $a1, 10    	#$a1 = upper bound (array size is 10)
     	syscall        	#$a0 holds random index [0,2]
 
     	#convert index to byte offset so that we can traverse array (2 bits^2 = 4)
