@@ -6,24 +6,26 @@
 .include "wordleMacro.asm"
 
 .data
-menu: .asciiz "~~ MAIN MENU “~~\n(1) Start Game\n(2) Exit Program\n"
+welcome: .asciiz "Welcome to Wordle!\n"
+menu: .asciiz "\n~~ MAIN MENU “~~\n(1) Start Game\n(2) Exit Program\n"
+instructions: .asciiz "\nYou have 6 attempts to guess a random 5-letter word.\nWhen you run out of attempts, the game ends.\nGOOD LUCK!"
 
 menuChoice: .asciiz "\nEnter (1) or (2) for your selection: "
 
-exitMsg: .asciiz "\nExiting Program. Goodbye!"
+exitMsg: .asciiz "\nThanks for playing. Goodbye!"
 
 word1: .asciiz "piano\n"
 word2: .asciiz "apple\n"
 word3: .asciiz "water\n" 
-word4: .asciiz "whose\n"
-word5: .asciiz "grand\n"
-word6: .asciiz "heavy\n"
-word7: .asciiz "while\n"
+word4: .asciiz "pixel\n"
+word5: .asciiz "pizza\n"
+word6: .asciiz "snowy\n"
+word7: .asciiz "ramen\n"
 word8: .asciiz "usual\n"
 word9: .asciiz "stick\n"
 word10: .asciiz "vital\n"
 
-youLose: .asciiz "You have reached max attempts, you lose! The answer was "
+youLose: .asciiz "\nYou have reached max attempts, you lose! The answer was "
 
 correct: .asciiz "Congrats!!! You won, the answer was "
 existsInWord: .asciiz " however does exist in the word"
@@ -41,8 +43,16 @@ replayMenu: .asciiz "\n~~Would you like to play again?~~\n(1) Yes\n(2) No\n"
 
 wordBank: .word word1, word2, word3, word4, word5, word6, word7, word8, word9, word10
 
+#start up sound effect
+music: .byte 67, 68
+instrument: .byte 8
+
+
 .text
 main: 
+	#print welcome
+	printString(welcome)
+	
     	#output Main Menu text
     	printString(menu)
 
@@ -64,6 +74,45 @@ main:
     	
 #randomly picks a word in the array for user to guess
 traverseArray:
+	#play sound
+	li $v0, 31
+    	li $a0, 61	#note
+    	li $a1, 2500	#time in milliseconds
+    	li $a2, 7  	#instrument 
+    	li $a3, 80 	#volume MAX
+    	syscall
+    	
+    	#sleep
+    	li $v0, 32
+    	li $a0, 500
+    	syscall
+    	
+    	#play sound
+	li $v0, 31
+    	li $a0, 63	#note
+    	li $a1, 500	#time in milliseconds
+    	li $a2, 7  	#instrument 
+    	li $a3, 80 	#volume MAX
+    	syscall
+    	
+    	#sleep
+    	li $v0, 32
+    	li $a0, 500
+    	syscall
+    	
+    	#play sound
+	li $v0, 31
+    	li $a0, 66	#note
+    	li $a1, 700	#time in milliseconds
+    	li $a2, 7  	#instrument 
+    	li $a3, 80 	#volume MAX
+    	syscall
+ 
+
+	#print instructions
+	printString(instructions)
+	printString(newLine)
+	
     	li $v0, 42	# 42 = random int generator in range
     	li $a0, 0    	#load generator ID in $a0 (0 = default generator)
     	li $a1, 10    	#$a1 = upper bound (array size is 10)
@@ -88,6 +137,7 @@ traverseArray:
     	li $s5, 5 	#$s5 is the max due to indexing (6 attempts, 0-5 index)
     	
 restart:
+
 	#prompt user for a guess
     	printString(promptUserInput)
     
@@ -338,6 +388,40 @@ maxAttempts:
     	printString(newLine)
     
 exit:
+	#play sound
+	
+	li $v0, 31
+    	li $a0, 66	#note
+    	li $a1, 2500	#time in milliseconds
+    	li $a2, 7  	#instrument 
+    	li $a3, 80 	#volume MAX
+    	syscall
+    	
+    	#sleep
+    	li $v0, 32
+    	li $a0, 500
+    	syscall
+    	
+    	#play sound
+	li $v0, 31
+    	li $a0, 63	#note
+    	li $a1, 500	#time in milliseconds
+    	li $a2, 7  	#instrument 
+    	li $a3, 80 	#volume MAX
+    	syscall
+    	
+    	#sleep
+    	li $v0, 32
+    	li $a0, 500
+    	syscall
+    	
+    	#play sound
+	li $v0, 31
+    	li $a0, 61	#note
+    	li $a1, 700	#time in milliseconds
+    	li $a2, 7  	#instrument 
+    	li $a3, 80 	#volume MAX
+    	syscall
 	printString(exitMsg)
 	
     	#exit program
