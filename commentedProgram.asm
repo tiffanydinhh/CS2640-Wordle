@@ -6,13 +6,14 @@
 .include "wordleMacro.asm"
 
 .data
-welcome: .asciiz "Welcome to Wordle!\n"
+welcome: .asciiz "\nWELCOME TO WORDLE!\n"
 menu: .asciiz "\n~~ MAIN MENU “~~\n(1) Start Game\n(2) Exit Program\n"
-instructions: .asciiz "\nYou have 6 attempts to guess a random 5-letter word.\nWhen you run out of attempts, the game ends.\nGOOD LUCK!"
+instructions: .asciiz "\nYou have 6 attempts to guess a random 5-letter word.\nWhen you run out of attempts, the game ends. Please type words in lowercase.\nGOOD LUCK!"
 
 menuChoice: .asciiz "\nEnter (1) or (2) for your selection: "
 
-exitMsg: .asciiz "\nThanks for playing. Goodbye!"
+invalidMsg: .asciiz "\nInvalid input. :( Please enter '1' or '2'\n"
+exitMsg: .asciiz "\nThanks for playing. Goodbye! :D"
 
 word1: .asciiz "piano\n"
 word2: .asciiz "apple\n"
@@ -69,8 +70,20 @@ main:
 
 	#if the user input is 2, it jumps to the exit
 	beq $s0, 2, exit
+	
+	#print invalid input
+	printString(invalidMsg)
+	
+	#play sound
+	li $v0, 31
+    	li $a0, 43	#note
+    	li $a1, 500	#time in milliseconds
+    	li $a2, 58 	#instrument 
+    	li $a3, 80
+    	syscall
     	
     	j main
+    
     	
 #randomly picks a word in the array for user to guess
 traverseArray:
@@ -118,8 +131,8 @@ traverseArray:
     	li $a1, 10    	#$a1 = upper bound (array size is 10)
     	syscall        	#$a0 holds random index [0,9]
 
-    	#convert index to byte offset so that we can traverse array (2 bits^2 = 4)
-    	#sll quickly converts an array index to a byte offset
+    	#convert random index to byte offset so that we can traverse array (2 bits^2 = 4)
+    	#sll shifts left by 2 bits 
     	sll $t1, $a0, 2     #index * 4 (4 bytes = word)
 
     	la $s1, wordBank
