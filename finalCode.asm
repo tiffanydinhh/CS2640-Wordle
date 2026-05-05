@@ -73,7 +73,7 @@ main:
 	printString(invalidMsg)
 	
 	#play sound
-	li $v0, 31
+	li $v0, 31	# 31 = midi
     	li $a0, 43	#note
     	li $a1, 500	#time in milliseconds
     	li $a2, 58 	#instrument 
@@ -104,7 +104,7 @@ traverseArray:
     	li $a0, 63	#note
     	li $a1, 500	#time in milliseconds
     	li $a2, 7  	#instrument 
-    	li $a3, 80 	#volume MAX
+    	li $a3, 80 	#volume
     	syscall
     	
     	#sleep
@@ -117,7 +117,7 @@ traverseArray:
     	li $a0, 66	#note
     	li $a1, 700	#time in milliseconds
     	li $a2, 7  	#instrument 
-    	li $a3, 80 	#volume MAX
+    	li $a3, 80 	#volume
     	syscall
  
 	#print instructions
@@ -351,10 +351,10 @@ incorrectGuess:
 	
     	#play lose sound
     	li $v0, 31
-    	li $a0, 45 #pitch
-    	li $a1, 500 #time in milliseconds
-    	li $a2, 58  # instrument 
-    	li $a3, 80 #volume MAX
+    	li $a0, 45	#pitch
+    	li $a1, 500	#time in milliseconds
+    	li $a2, 58 	#instrument 
+    	li $a3, 80	#volume
     	syscall
     	
     	addi $s6, $s6, 1
@@ -362,11 +362,12 @@ incorrectGuess:
 	j restart
     
 maxAttempts:
+	#play sound
 	li $v0, 31
-	li $a0, 50 #pitch
-    	li $a1, 1000 #time in milliseconds
-    	li $a2, 58  # instrument 
-    	li $a3, 90 #volume MAX
+	li $a0, 50	#pitch
+    	li $a1, 1000	#time in milliseconds
+    	li $a2, 58	#instrument
+    	li $a3, 90	#volume
     	syscall
     
     	li $a1, 1300
@@ -405,10 +406,10 @@ exit:
 	#play sound
 	
 	li $v0, 31
-    	li $a0, 66	#note
+    	li $a0, 66	#pitch
     	li $a1, 2500	#time in milliseconds
     	li $a2, 7  	#instrument 
-    	li $a3, 80 	#volume MAX
+    	li $a3, 80 	#volume
     	syscall
     	
     	#sleep
@@ -418,10 +419,10 @@ exit:
     	
     	#play sound
 	li $v0, 31
-    	li $a0, 63	#note
+    	li $a0, 63	#pitch
     	li $a1, 500	#time in milliseconds
     	li $a2, 7  	#instrument 
-    	li $a3, 80 	#volume MAX
+    	li $a3, 80 	#volume
     	syscall
     	
     	#sleep
@@ -436,8 +437,8 @@ exit:
     	li $a2, 7  	#instrument 
     	li $a3, 80 	#volume MAX
     	syscall
+    	
 	printString(exitMsg)
-	
     	#exit program
     	li $v0, 10
     	syscall
